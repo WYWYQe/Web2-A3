@@ -1,0 +1,15 @@
+{
+    "name": "prog2002-a3-api",
+    "version": "1.0.0",
+    "description": "PROG2002 Assignment 3 - Charity Events RESTful API with event registrations (full CRUD)",
+    "main": "server.js",
+    "license": "ISC",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "cors": "^2.8.6",
+        "express": "^5.2.1",
+        "mysql2": "^3.24.5"
+    }
+}
