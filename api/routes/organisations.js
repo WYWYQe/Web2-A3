@@ -1,6 +1,6 @@
 // Organisations routes.
 // Return all organisations so the admin event form can populate its dropdown.
-// The A2 API did not expose this resource, but the admin site needs it.
+// The public site never displays organisations, only the admin site needs them.
 const express = require('express');
 const { getConnection } = require('../event_db');
 

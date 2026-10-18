@@ -24,15 +24,24 @@ app.use((req, res, next) => {
 });
 
 // Resource routes.
-app.use('/api/events',        eventsRouter);
-app.use('/api/categories',    categoriesRouter);
-app.use('/api/locations',     locationsRouter);
-app.use('/api/registrations', registrationsRouter);
-app.use('/api/organisations', organisationsRouter);
+//
+// The routers are mounted twice on purpose: once under /api (the URL both
+// front-ends call) and once at the root. Shared hosts differ in whether they
+// pass the request path through unchanged or strip the mount prefix before the
+// app sees it, so registering both makes the endpoints answer either way.
+['/api', ''].forEach((prefix) => {
+  app.use(prefix + '/events',        eventsRouter);
+  app.use(prefix + '/categories',    categoriesRouter);
+  app.use(prefix + '/locations',     locationsRouter);
+  app.use(prefix + '/registrations', registrationsRouter);
+  app.use(prefix + '/organisations', organisationsRouter);
+});
 
-// Not found response for any other API path.
-app.use('/api', (req, res) => {
-  res.status(404).json({ error: 'Endpoint not found' });
+// Anything under /api that no router matched is a 404, not an HTML error page.
+['/api', ''].forEach((prefix) => {
+  app.use(prefix, (req, res) => {
+    res.status(404).json({ error: 'Endpoint not found' });
+  });
 });
 
 // Central error handler. Log the real error. Never send the stack to the client.

@@ -52,11 +52,20 @@ router.post('/', async (req, res, next) => {
 
     // The event must exist and must not be suspended.
     const [events] = await db.query(
-      'SELECT event_id FROM events WHERE event_id = ? AND is_suspended = 0',
+      'SELECT event_id, event_date, (event_date < CURDATE()) AS is_past ' +
+      'FROM events WHERE event_id = ? AND is_suspended = 0',
       [eventId]
     );
     if (events.length === 0) {
       return res.status(404).json({ error: `Event ${eventId} not found` });
+    }
+
+    // Registration closes once the event date has passed. This uses the same
+    // CURDATE() test as the event list, so "past" means the same thing here.
+    if (Number(events[0].is_past) === 1) {
+      return res.status(409).json({
+        error: `Event ${eventId} took place on ${events[0].event_date}, so registration is closed.`
+      });
     }
 
     try {
