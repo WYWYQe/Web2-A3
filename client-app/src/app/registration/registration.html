@@ -1,0 +1,81 @@
+@if (errorMessage() && !confirmed()) {
+  <p class="status error" role="alert">{{ errorMessage() }}</p>
+}
+
+@if (confirmed(); as done) {
+
+  <section class="card" role="status">
+    <h1>Registration confirmed</h1>
+    <p>
+      Thank you {{ done.name }}. {{ done.tickets }} ticket(s) are confirmed.
+      Your registration number is <strong>#{{ done.id }}</strong>.
+    </p>
+    <p class="btn-row">
+      <a class="btn btn-primary" [routerLink]="['/event', eventId]">Back to the event</a>
+      <a class="btn" routerLink="/">Back to home</a>
+    </p>
+  </section>
+
+} @else {
+
+  @if (event(); as e) {
+
+    <!-- Show the event the user is registering for, so there is no doubt. -->
+    <section class="card">
+      <h1>{{ e.event_name }}</h1>
+      <p class="lead">{{ e.summary }}</p>
+
+      <dl class="detail-list">
+        <dt>Date</dt><dd>{{ e.event_date }}</dd>
+        <dt>Time</dt>
+        <dd>{{ formatTime(e.start_time) || '-' }}{{ e.end_time ? ' - ' + formatTime(e.end_time) : '' }}</dd>
+        <dt>Venue</dt><dd>{{ e.venue }}, {{ e.city }}</dd>
+        <dt>Ticket price</dt>
+        <dd>{{ e.ticket_price === 0 ? 'Free entry' : ('$' + e.ticket_price.toFixed(2)) }}</dd>
+      </dl>
+    </section>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+
+      <label for="user_name">Full name *</label>
+      <input id="user_name" type="text" formControlName="user_name" autocomplete="name">
+      @if (form.controls.user_name.touched && form.controls.user_name.invalid) {
+        <p class="field-error">Please enter your full name (2 to 100 characters).</p>
+      }
+
+      <label for="user_email">Email *</label>
+      <input id="user_email" type="email" formControlName="user_email" autocomplete="email">
+      @if (form.controls.user_email.touched && form.controls.user_email.invalid) {
+        <p class="field-error">Please enter a valid email address.</p>
+      }
+
+      <label for="contact_phone">Contact phone</label>
+      <input id="contact_phone" type="tel" formControlName="contact_phone" autocomplete="tel">
+      @if (form.controls.contact_phone.touched && form.controls.contact_phone.invalid) {
+        <p class="field-error">Phone number contains invalid characters.</p>
+      }
+
+      <label for="tickets">Number of tickets *</label>
+      <input id="tickets" type="number" min="1" max="20" step="1" formControlName="tickets">
+      @if (form.controls.tickets.touched && form.controls.tickets.invalid) {
+        <p class="field-error">Number of tickets must be between 1 and 20.</p>
+      }
+
+      <p class="muted">
+        Total: <strong>{{ totalPrice() === 0 ? 'Free entry' : ('$' + totalPrice().toFixed(2)) }}</strong>
+      </p>
+
+      <p class="btn-row">
+        <button type="submit" class="btn btn-primary" [disabled]="submitting()">
+          {{ submitting() ? 'Submitting...' : 'Finalise registration' }}
+        </button>
+        <a class="btn" [routerLink]="['/event', eventId]">Cancel</a>
+      </p>
+
+    </form>
+
+  } @else {
+    <p class="status">Loading event details&hellip;</p>
+  }
+
+}

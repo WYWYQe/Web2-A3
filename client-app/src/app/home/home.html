@@ -1,0 +1,33 @@
+@if (loading()) {
+  <p class="status">Loading events&hellip;</p>
+} @else if (message()) {
+  <p class="status"
+     [class.success]="messageType() === 'success'"
+     [class.error]="messageType() === 'error'">
+    {{ message() }}
+  </p>
+}
+
+<section>
+  <h2>Upcoming events</h2>
+
+  <div class="card-grid">
+    @for (event of upcoming(); track event.event_id) {
+      <app-event-card [event]="event"></app-event-card>
+    } @empty {
+      <p class="muted">There are no upcoming events at the moment. Please check back soon.</p>
+    }
+  </div>
+</section>
+
+@if (past().length > 0) {
+  <section>
+    <h2>Past events</h2>
+
+    <div class="card-grid">
+      @for (event of past(); track event.event_id) {
+        <app-event-card [event]="event"></app-event-card>
+      }
+    </div>
+  </section>
+}

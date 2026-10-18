@@ -1,0 +1,56 @@
+<div class="filter-bar">
+
+  <label>
+    Category
+    <select [(ngModel)]="categoryId">
+      <option value="">All categories</option>
+      @for (category of categories(); track category.category_id) {
+        <option [value]="category.category_id">{{ category.category_name }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    City
+    <select [(ngModel)]="city">
+      <option value="">All cities</option>
+      @for (c of cities(); track c) {
+        <option [value]="c">{{ c }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    From
+    <input type="date" [(ngModel)]="dateFrom">
+  </label>
+
+  <label>
+    To
+    <input type="date" [(ngModel)]="dateTo">
+  </label>
+
+  <div class="filter-actions">
+    <button type="button" class="btn btn-primary" (click)="search()">Search</button>
+    <button type="button" class="btn" (click)="reset()">Reset</button>
+  </div>
+
+</div>
+
+@if (loading()) {
+  <p class="status">Searching&hellip;</p>
+} @else if (message()) {
+  <p class="status"
+     [class.success]="messageType() === 'success'"
+     [class.error]="messageType() === 'error'">
+    {{ message() }}
+  </p>
+}
+
+<div class="card-grid">
+  @for (event of results(); track event.event_id) {
+    <app-event-card [event]="event"></app-event-card>
+  } @empty {
+    <p class="muted">No events match those filters yet. Try clearing the date range or the city.</p>
+  }
+</div>

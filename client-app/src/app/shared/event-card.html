@@ -1,0 +1,29 @@
+<article class="event-card">
+  <a class="card-link" [routerLink]="['/event', event().event_id]">
+
+    <div class="card-media">
+      @if (event().image_url; as img) {
+        <img [src]="img" alt="" loading="lazy">
+      }
+      <span class="card-cat">{{ event().category_name }}</span>
+    </div>
+
+    <div class="card-body">
+      <h3 class="card-title">{{ event().event_name }}</h3>
+      <p class="card-summary">{{ event().summary }}</p>
+
+      <ul class="card-meta">
+        <li>{{ formatDate(event().event_date) }}</li>
+        <li>{{ event().city }}</li>
+        <li>{{ formatPrice(event().ticket_price) }}</li>
+      </ul>
+
+      <span class="badge"
+            [class.badge-past]="event().event_status === 'past'"
+            [class.badge-upcoming]="event().event_status !== 'past'">
+        {{ event().event_status === 'past' ? 'Past event' : 'Upcoming' }}
+      </span>
+    </div>
+
+  </a>
+</article>
