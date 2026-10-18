@@ -36,8 +36,14 @@ app.use('/api', (req, res) => {
 });
 
 // Central error handler. Log the real error. Never send the stack to the client.
+// Body-parser errors (malformed JSON) and other client mistakes carry their own
+// status, so honour it instead of reporting every failure as 500.
 app.use((err, req, res, next) => {
   console.error('[API error]', err);
+  const status = err.status || err.statusCode;
+  if (status && status >= 400 && status < 500) {
+    return res.status(status).json({ error: err.message || 'Bad request' });
+  }
   res.status(500).json({ error: 'Internal server error' });
 });
 

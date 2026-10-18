@@ -11,23 +11,28 @@ const router = express.Router();
 // Event status is derived from the date so it can never go stale.
 const EVENT_LIST_SELECT = `
   SELECT e.event_id, e.event_name, e.summary, e.event_date, e.start_time, e.end_time,
-         e.venue, e.city, e.ticket_price, e.image_url,
+         e.venue, e.city, e.ticket_price, e.image_url, e.is_suspended,
          c.category_id, c.category_name,
          o.org_id, o.org_name,
          CASE WHEN e.event_date < CURDATE() THEN 'past' ELSE 'upcoming' END AS event_status
   FROM events e
   JOIN categories    c ON c.category_id = e.category_id
   JOIN organisations o ON o.org_id      = e.org_id
-  WHERE e.is_suspended = 0
 `;
 
 // List events.
 // Optional query parameters are date, date from, date to, city, category id, status, and limit.
 router.get('/', async (req, res, next) => {
   try {
-    const { date, dateFrom, dateTo, city, categoryId, status, limit } = req.query;
+    const { date, dateFrom, dateTo, city, categoryId, status, limit, includeSuspended } = req.query;
     const conditions = [];
     const params = [];
+
+    // Suspended events are hidden from the public site by default.
+    // The admin site passes includeSuspended=1 so staff can see everything.
+    if (String(includeSuspended || '') !== '1') {
+      conditions.push('e.is_suspended = 0');
+    }
 
     if (date) {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
@@ -58,7 +63,7 @@ router.get('/', async (req, res, next) => {
         : 'e.event_date <  CURDATE()');
     }
 
-    const where = conditions.length ? ' AND ' + conditions.join(' AND ') : '';
+    const where = conditions.length ? ' WHERE ' + conditions.join(' AND ') : '';
     let sql = EVENT_LIST_SELECT + where + ' ORDER BY e.event_date ASC';
 
     // Optional row limit so one request can never return an unbounded result set.
@@ -119,6 +124,9 @@ router.get('/:id', async (req, res, next) => {
       return res.status(400).json({ error: 'Event id must be a positive integer' });
     }
     const db = await getConnection();
+    // includeSuspended=1 lets the admin open an event that is hidden from the
+    // public site (needed by the edit form).
+    const includeSuspended = String(req.query.includeSuspended || '') === '1';
     const [rows] = await db.query(
       `SELECT e.*,
               c.category_name,
@@ -128,7 +136,7 @@ router.get('/:id', async (req, res, next) => {
        FROM events e
        JOIN categories    c ON c.category_id = e.category_id
        JOIN organisations o ON o.org_id      = e.org_id
-       WHERE e.event_id = ? AND e.is_suspended = 0`,
+       WHERE e.event_id = ? ${includeSuspended ? '' : 'AND e.is_suspended = 0'}`,
       [id]
     );
 
