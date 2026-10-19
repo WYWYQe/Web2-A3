@@ -1,3 +1,44 @@
+<!-- Static introduction, carried over from the Assessment 2 home page. -->
+<section class="hero">
+  <p class="eyebrow">Welcome</p>
+  <h1>Together we can make a difference</h1>
+  <p class="lead">
+    Charity Events connects generous people with local fundraising events &mdash; fun runs,
+    gala dinners, silent auctions, concerts and community quiz nights. Browse what is on,
+    find a cause you care about, and join in.
+  </p>
+  <p class="hero-actions">
+    <a class="btn btn-primary" routerLink="/search">Find an event</a>
+    <a class="btn btn-ghost" href="#events">See what&rsquo;s on</a>
+  </p>
+</section>
+
+<section class="info-grid">
+  <article class="info-card">
+    <h2>Our mission</h2>
+    <p>
+      We believe every community is stronger when people show up for one another.
+      Our mission is to make local charitable causes visible, accessible and easy to support.
+    </p>
+  </article>
+  <article class="info-card">
+    <h2>How it works</h2>
+    <p>
+      Search for an event near you, read the full details, and register your interest.
+      Every ticket purchased acts as a donation to the cause behind the event.
+    </p>
+  </article>
+  <article class="info-card">
+    <h2>Contact us</h2>
+    <ul class="contact-list">
+      <li>Email: <a href="mailto:hello@charityevents.org.au">hello@charityevents.org.au</a></li>
+      <li>Phone: (02) 6600 0000</li>
+      <li>Office: 12 River Street, Lismore NSW 2480</li>
+      <li>Hours: Monday &ndash; Friday, 9am &ndash; 5pm</li>
+    </ul>
+  </article>
+</section>
+
 @if (loading()) {
   <p class="status">Loading events&hellip;</p>
 } @else if (message()) {
@@ -8,7 +49,7 @@
   </p>
 }
 
-<section>
+<section id="events">
   <h2>Upcoming events</h2>
 
   <div class="card-grid">

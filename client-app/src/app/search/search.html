@@ -1,3 +1,9 @@
+<h1>Search events</h1>
+<p class="lead">
+  Filter by date range, city and category. You can use one filter on its own,
+  combine several, or leave everything empty to list every event.
+</p>
+
 <div class="filter-bar">
 
   <label>
@@ -46,6 +52,8 @@
     {{ message() }}
   </p>
 }
+
+<h2>Results</h2>
 
 <div class="card-grid">
   @for (event of results(); track event.event_id) {

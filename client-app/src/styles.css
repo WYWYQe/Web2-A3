@@ -205,6 +205,47 @@ main.container { padding: 1.6rem 0 3rem; }
 .btn-block { display: block; width: 100%; margin: 1rem 0; }
 .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1rem; }
 
+/* ---------- home: hero and introduction ---------- */
+
+.hero {
+  background: linear-gradient(140deg, var(--accent-soft) 0%, #ffffff 55%, #eaf6f1 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2.2rem 1.6rem;
+  margin-bottom: 1.6rem;
+}
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .75rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: .4rem;
+}
+.hero .lead { max-width: 62ch; color: var(--ink-soft); font-size: 1.06rem; }
+.hero-actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: 1.2rem; margin-bottom: 0; }
+.btn-ghost { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover { background: var(--bg); }
+
+.info-grid {
+  display: grid;
+  gap: 1rem;
+  margin: 1.6rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  box-shadow: var(--shadow);
+}
+.info-card h2 { margin-top: 0; font-size: 1.05rem; }
+.info-card p:last-child { margin-bottom: 0; }
+.contact-list { list-style: none; margin: 0; padding: 0; font-size: .92rem; }
+.contact-list li { padding: .15rem 0; color: var(--ink-soft); }
+
 /* ---------- detail page ---------- */
 
 .back-row { display: flex; gap: 1rem; margin-bottom: 1rem; }

@@ -2,6 +2,7 @@
 // Two independent API calls are started together and awaited together, so the
 // page waits for the slower request instead of waiting for both in sequence.
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 
 import { CharityApi } from '../core/charity-api';
@@ -10,7 +11,7 @@ import { EventCard } from '../shared/event-card';
 
 @Component({
   selector: 'app-home',
-  imports: [EventCard],
+  imports: [RouterLink, EventCard],
   templateUrl: './home.html'
 })
 export class HomePage implements OnInit {
