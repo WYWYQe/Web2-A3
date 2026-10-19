@@ -1,0 +1,67 @@
+<h1>Events</h1>
+
+<p class="muted">
+  All events in the database. Deleting an event that already has registrations
+  is refused by the API, and the reason is shown below.
+</p>
+
+<a class="btn btn-primary" routerLink="/add">+ Add a new event</a>
+
+@if (message()) {
+  <p class="status"
+     [class.success]="messageType() === 'success'"
+     [class.error]="messageType() === 'error'"
+     role="status">
+    {{ message() }}
+  </p>
+}
+
+@if (loading()) {
+  <p class="status">Loading events&hellip;</p>
+} @else {
+
+  <table class="reg-table admin-table">
+    <caption class="muted">{{ events().length }} event(s) in total</caption>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Date</th>
+        <th>City</th>
+        <th>Category</th>
+        <th>Ticket</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (event of events(); track event.event_id) {
+        <tr>
+          <td>{{ event.event_id }}</td>
+          <td>{{ event.event_name }}</td>
+          <td>{{ formatDate(event.event_date) }}</td>
+          <td>{{ event.city || '-' }}</td>
+          <td>{{ event.category_name }}</td>
+          <td>{{ formatPrice(event.ticket_price) }}</td>
+          <td>
+            @if (event.is_suspended) {
+              <span class="badge badge-suspended">Suspended</span>
+            } @else {
+              <span class="badge badge-upcoming">Active</span>
+            }
+          </td>
+          <td class="row-actions">
+            <a class="btn btn-small" [routerLink]="['/edit', event.event_id]">Edit</a>
+            <button type="button" class="btn btn-small btn-danger"
+                    (click)="remove(event)">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="8" class="muted">No events in the database.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+}

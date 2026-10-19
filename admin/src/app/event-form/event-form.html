@@ -1,0 +1,122 @@
+<h1>{{ isEdit ? 'Edit event' : 'Add a new event' }}</h1>
+
+@if (errorMessage()) {
+  <p class="status error" role="alert">{{ errorMessage() }}</p>
+}
+
+@if (loading()) {
+  <p class="status">Loading event&hellip;</p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+
+  <h2>Basics</h2>
+
+  <label for="event_name">Event name *</label>
+  <input id="event_name" type="text" formControlName="event_name">
+  @if (form.controls.event_name.touched && form.controls.event_name.invalid) {
+    <p class="field-error">Please enter a name (3 to 150 characters).</p>
+  }
+
+  <label for="event_date">Date *</label>
+  <input id="event_date" type="date" formControlName="event_date">
+  @if (form.controls.event_date.touched && form.controls.event_date.invalid) {
+    <p class="field-error">Please choose a valid date.</p>
+  }
+
+  <div class="form-row">
+    <div>
+      <label for="start_time">Start time</label>
+      <input id="start_time" type="time" formControlName="start_time">
+    </div>
+    <div>
+      <label for="end_time">End time</label>
+      <input id="end_time" type="time" formControlName="end_time">
+    </div>
+  </div>
+
+  <label for="summary">Short summary</label>
+  <input id="summary" type="text" formControlName="summary">
+
+  <label for="description">Description</label>
+  <textarea id="description" rows="4" formControlName="description"></textarea>
+
+  <label for="purpose">Why we are fundraising</label>
+  <input id="purpose" type="text" formControlName="purpose">
+
+  <h2>Where</h2>
+
+  <label for="venue">Venue</label>
+  <input id="venue" type="text" formControlName="venue">
+
+  <label for="address">Address</label>
+  <input id="address" type="text" formControlName="address">
+
+  <label for="city">City</label>
+  <input id="city" type="text" formControlName="city">
+
+  <div class="form-row">
+    <div>
+      <label for="latitude">Latitude</label>
+      <input id="latitude" type="number" step="0.000001" formControlName="latitude">
+    </div>
+    <div>
+      <label for="longitude">Longitude</label>
+      <input id="longitude" type="number" step="0.000001" formControlName="longitude">
+    </div>
+  </div>
+  <p class="muted">Latitude and longitude are used by the weather forecast on the public site.</p>
+
+  <h2>Classification</h2>
+
+  <label for="category_id">Category *</label>
+  <select id="category_id" formControlName="category_id">
+    <option [ngValue]="null">-- choose a category --</option>
+    @for (category of categories(); track category.category_id) {
+      <option [ngValue]="category.category_id">{{ category.category_name }}</option>
+    }
+  </select>
+  @if (form.controls.category_id.touched && form.controls.category_id.invalid) {
+    <p class="field-error">Please choose a category.</p>
+  }
+
+  <label for="org_id">Organisation *</label>
+  <select id="org_id" formControlName="org_id">
+    <option [ngValue]="null">-- choose an organisation --</option>
+    @for (org of organisations(); track org.org_id) {
+      <option [ngValue]="org.org_id">{{ org.org_name }}</option>
+    }
+  </select>
+  @if (form.controls.org_id.touched && form.controls.org_id.invalid) {
+    <p class="field-error">Please choose an organisation.</p>
+  }
+
+  <h2>Money and artwork</h2>
+
+  <div class="form-row">
+    <div>
+      <label for="ticket_price">Ticket price ($)</label>
+      <input id="ticket_price" type="number" min="0" step="0.01" formControlName="ticket_price">
+    </div>
+    <div>
+      <label for="goal_amount">Fundraising goal ($)</label>
+      <input id="goal_amount" type="number" min="0" step="0.01" formControlName="goal_amount">
+    </div>
+  </div>
+
+  <label for="image_url">Artwork path (optional)</label>
+  <input id="image_url" type="text" formControlName="image_url"
+         placeholder="/images/funrun-5k.jpg">
+  <p class="muted">
+    Optional. Type any path or URL yourself, or leave it empty &mdash; the event card then
+    shows a plain coloured placeholder instead of a picture.
+  </p>
+
+  <p class="btn-row">
+    <button type="submit" class="btn btn-primary" [disabled]="saving()">
+      {{ saving() ? 'Saving...' : 'Save event' }}
+    </button>
+    <a class="btn" routerLink="/">Cancel</a>
+  </p>
+
+</form>

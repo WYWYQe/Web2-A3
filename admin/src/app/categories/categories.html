@@ -1,0 +1,73 @@
+<h1>Categories</h1>
+
+<p class="muted">
+  A category that is still used by events cannot be deleted; the API refuses it
+  and the reason is shown below.
+</p>
+
+@if (message()) {
+  <p class="status"
+     [class.success]="messageType() === 'success'"
+     [class.error]="messageType() === 'error'"
+     role="status">
+    {{ message() }}
+  </p>
+}
+
+<section class="card">
+  <h2>Add a category</h2>
+
+  <form [formGroup]="form" (ngSubmit)="add()">
+    <label for="category_name">Name *</label>
+    <input id="category_name" type="text" formControlName="category_name">
+    @if (form.controls.category_name.touched && form.controls.category_name.invalid) {
+      <p class="field-error">A category name is required (up to 60 characters).</p>
+    }
+
+    <label for="description">Description</label>
+    <input id="description" type="text" formControlName="description">
+
+    <p class="btn-row">
+      <button type="submit" class="btn btn-primary" [disabled]="saving()">
+        {{ saving() ? 'Saving...' : 'Add category' }}
+      </button>
+    </p>
+  </form>
+</section>
+
+@if (loading()) {
+  <p class="status">Loading categories&hellip;</p>
+} @else {
+
+  <table class="reg-table admin-table">
+    <caption class="muted">{{ categories().length }} category(ies)</caption>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Events using it</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (category of categories(); track category.category_id) {
+        <tr>
+          <td>{{ category.category_id }}</td>
+          <td>{{ category.category_name }}</td>
+          <td>{{ category.description || '-' }}</td>
+          <td>{{ category.event_count ?? 0 }}</td>
+          <td class="row-actions">
+            <button type="button" class="btn btn-small btn-danger"
+                    (click)="remove(category)">Delete</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="5" class="muted">No categories yet.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+}
