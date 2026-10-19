@@ -67,8 +67,8 @@ export class EventDetailPage implements OnInit {
   }
 
   // Forecast for the day of the event.
-  // Open-Meteo only publishes about 16 days ahead, so an event further away
-  // than that simply has no forecast yet - we explain that instead of failing.
+  // Open-Meteo only publishes about 7 days ahead by default, so an event further
+  // away than that simply has no forecast yet - we explain that instead of failing.
   private loadForecast(event: EventRec): void {
     const lat = event.latitude;
     const lon = event.longitude;
@@ -96,7 +96,7 @@ export class EventDetailPage implements OnInit {
         if (index < 0) {
           this.forecastMessage.set(
             'No forecast for ' + event.event_date +
-            ' yet - Open-Meteo only forecasts about 16 days ahead.'
+            ' yet - Open-Meteo only forecasts about 7 days ahead.'
           );
           return;
         }

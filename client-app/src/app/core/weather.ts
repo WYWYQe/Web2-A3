@@ -5,8 +5,8 @@
 // added for this feature.
 //
 // Open-Meteo is free and needs no key, and it allows browser calls (CORS).
-// It only publishes about 16 days ahead, so an event further away than that
-// simply has no forecast yet - the page says so instead of failing.
+// It only publishes about 7 days ahead by default, so an event further away than
+// that simply has no forecast yet - the page says so instead of failing.
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';

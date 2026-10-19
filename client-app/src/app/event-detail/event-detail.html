@@ -119,7 +119,12 @@
         <dt>Ticket</dt><dd>{{ formatPrice(e.ticket_price) }}</dd>
       </dl>
 
-      <a class="btn btn-primary btn-block" [routerLink]="['/register', e.event_id]">Register Now</a>
+      @if (e.event_status === 'past') {
+        <p class="btn btn-block btn-closed">Registration closed</p>
+        <p class="muted">This event took place on {{ formatDate(e.event_date) }}.</p>
+      } @else {
+        <a class="btn btn-primary btn-block" [routerLink]="['/register', e.event_id]">Register Now</a>
+      }
 
       <h2>Organised by</h2>
       <p class="org-name">{{ e.org_name }}</p>

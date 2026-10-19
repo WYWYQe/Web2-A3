@@ -35,6 +35,17 @@
       </dl>
     </section>
 
+    @if (registrationClosed) {
+
+      <p class="status error" role="alert">
+        Registration for this event has closed: {{ e.event_name }} took place on {{ e.event_date }}.
+      </p>
+      <p class="btn-row">
+        <a class="btn" [routerLink]="['/event', eventId]">Back to the event</a>
+      </p>
+
+    } @else {
+
     <form [formGroup]="form" (ngSubmit)="submit()">
 
       <label for="user_name">Full name *</label>
@@ -73,6 +84,8 @@
       </p>
 
     </form>
+
+    }
 
   } @else {
     <p class="status">Loading event details&hellip;</p>

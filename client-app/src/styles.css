@@ -1,5 +1,5 @@
 /* ============================================================
-   Global stylesheet for the A3 client site.
+   Global stylesheet for the client site.
 
    Every style lives here and no component declares its own styleUrl,
    so there is exactly one place to change the look.
@@ -201,6 +201,7 @@ main.container { padding: 1.6rem 0 3rem; }
 .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn-primary:hover { background: #1a5d4d; }
 .btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+.btn-closed { background: #eceef2; border-color: #e0e3e9; color: #6b7280; cursor: not-allowed; }
 .btn-block { display: block; width: 100%; margin: 1rem 0; }
 .btn-row { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1rem; }
 

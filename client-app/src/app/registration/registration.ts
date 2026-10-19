@@ -25,6 +25,11 @@ export class RegistrationPage implements OnInit {
   errorMessage = signal('');
   confirmed = signal<{ id: number; tickets: number; name: string } | null>(null);
 
+  // True once the event has taken place: the form is replaced by a notice.
+  get registrationClosed(): boolean {
+    return this.event()?.event_status === 'past';
+  }
+
   form = this.fb.group({
     user_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
     user_email: ['', [Validators.required, Validators.email]],
